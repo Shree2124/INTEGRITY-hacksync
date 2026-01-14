@@ -115,7 +115,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ user }) => {
           </Link>
 
           {/* Audit CTA (Highlighted) */}
-          <Link href="/auditview" aria-label="New Audit">
+          <Link href="/createaudit" aria-label="New Audit">
             <div
               className={`ml-1 px-4 py-2 rounded-full flex items-center gap-2 shadow-lg transition-all transform active:scale-95 ${
                 isActive("/auditview")

@@ -183,7 +183,7 @@ export const Header: React.FC<HeaderProps> = ({ onGetStarted }) => {
               </Button>
               <Link
                 href={"/login"}
-                className="bg-blue-900 cursor-pointer hover:bg-blue-800 text-white gap-2 shadow-md h-9"
+                className="bg-blue-900 hover:bg-blue-800 text-white gap-2 shadow-md h-9 flex items-center px-4 rounded-md font-semibold"
               >
                 <UserCircle size={16} />
                 Citizen Login
