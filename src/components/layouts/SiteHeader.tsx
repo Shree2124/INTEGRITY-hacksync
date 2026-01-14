@@ -7,8 +7,8 @@ import {
   Camera as CameraIcon,
   Bell as BellIcon,
   User as UserIcon,
-  LogOut,
   Building2,
+  LayoutDashboard, // Added Dashboard Icon
 } from "lucide-react";
 import { User } from "@/types/types";
 
@@ -26,8 +26,10 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ user }) => {
   return (
     <header className="bg-slate-900 text-white shadow-md z-30 sticky top-0 border-b border-slate-800">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+        
+        {/* Logo / Home Link */}
         <Link
-          href="/mapview"
+          href="/dashboard"
           className="flex items-center gap-3 hover:opacity-90 transition-opacity"
         >
           <div className="bg-blue-600 p-1.5 rounded-lg shrink-0 border border-blue-500 shadow-[0_0_15px_rgba(37,99,235,0.3)]">
@@ -43,7 +45,40 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ user }) => {
           </div>
         </Link>
 
+        {/* Navigation Items */}
         <div className="flex items-center gap-2 sm:gap-3">
+          
+          {/* Dashboard Link */}
+          <Link href="/dashboard" aria-label="Dashboard">
+            <div
+              className={`p-2 rounded-lg transition-all flex items-center gap-2 ${
+                isActive("/dashboard")
+                  ? "bg-slate-800 text-white shadow-inner"
+                  : "text-slate-400 hover:bg-slate-800 hover:text-white"
+              }`}
+            >
+              <LayoutDashboard size={20} />
+              <span className="hidden md:inline text-sm font-medium">Dashboard</span>
+            </div>
+          </Link>
+
+          {/* Map Link */}
+          <Link href="/mapview" aria-label="Map View">
+            <div
+              className={`p-2 rounded-lg transition-all flex items-center gap-2 ${
+                isActive("/mapview")
+                  ? "bg-slate-800 text-white shadow-inner"
+                  : "text-slate-400 hover:bg-slate-800 hover:text-white"
+              }`}
+            >
+              <MapIcon size={20} />
+              <span className="hidden md:inline text-sm font-medium">Map</span>
+            </div>
+          </Link>
+
+          <div className="h-6 w-px bg-slate-800 mx-1 hidden sm:block"></div>
+
+          {/* Alerts Link */}
           <Link href="/alertview" aria-label="Alerts">
             <div
               className={`relative p-2 rounded-lg transition-all duration-300 ${
@@ -62,21 +97,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ user }) => {
             </div>
           </Link>
 
-          <div className="h-6 w-px bg-slate-800 mx-1 hidden sm:block"></div>
-
-          <Link href="/mapview" aria-label="Map Dashboard">
-            <div
-              className={`p-2 rounded-lg transition-all flex items-center gap-2 ${
-                isActive("/mapview")
-                  ? "bg-slate-800 text-white"
-                  : "text-slate-400 hover:bg-slate-800 hover:text-white"
-              }`}
-            >
-              <MapIcon size={20} />
-              <span className="hidden md:inline text-sm font-medium">Map</span>
-            </div>
-          </Link>
-
+          {/* Audit CTA (Highlighted) */}
           <Link href="/auditview" aria-label="New Audit">
             <div
               className={`ml-1 px-4 py-2 rounded-full flex items-center gap-2 shadow-lg transition-all transform active:scale-95 ${
@@ -90,6 +111,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ user }) => {
             </div>
           </Link>
 
+          {/* Profile Link */}
           <Link href="/profileview" aria-label="Profile">
             <div
               className={`ml-2 p-0.5 rounded-full border-2 transition-all ${

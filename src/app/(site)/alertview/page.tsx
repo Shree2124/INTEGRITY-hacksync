@@ -96,7 +96,7 @@ export default function AlertsPage() {
         
         <div className="flex items-center gap-2 mb-8">
           <Link 
-            href="/mapview" 
+            href="/dashboard" 
             className="text-sm text-blue-600 font-medium flex items-center gap-1 hover:underline transition-all"
           >
              <ArrowLeft size={16} /> Back to Homepage
