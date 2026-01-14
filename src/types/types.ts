@@ -23,7 +23,7 @@ export interface User {
   name: string;
   email: string;
   avatarUrl?: string;
-  role: 'Citizen' | 'Official';
+  role: 'Citizen' | 'Official' | 'Admin';
 }
 
 export interface OfficialRecord {

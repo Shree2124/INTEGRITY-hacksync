@@ -22,6 +22,9 @@ export default function SiteLayout({
       if (!user) {
         // User not authenticated, redirect to login with return URL
         router.replace(`/login?redirect=${pathname}`);
+      } else if (user.role === 'Admin') {
+        // Admin users should only access admin routes
+        router.replace('/admin');
       } else if (!emailVerified) {
         // User authenticated but email not verified
         router.replace('/verify-email');
@@ -33,8 +36,8 @@ export default function SiteLayout({
     return <LoadingScreen />;
   }
 
-  // If no user or email not verified, don't render (redirect handles it)
-  if (!user || !emailVerified) {
+  // If no user, email not verified, or admin trying to access citizen routes, don't render
+  if (!user || !emailVerified || user.role === 'Admin') {
     return null;
   }
 

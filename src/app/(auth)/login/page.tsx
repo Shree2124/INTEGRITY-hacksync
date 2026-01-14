@@ -25,7 +25,16 @@ const LoginView = () => {
 
     try {
       await signIn(email, password);
-      router.push(redirectTo);
+      // Check if user is admin after sign in
+      const currentUser = await new Promise((resolve) => {
+        setTimeout(() => resolve(JSON.parse(localStorage.getItem('admin_session') || 'null')), 100);
+      });
+
+      if (currentUser && (currentUser as any).isAdmin) {
+        router.push('/admin');
+      } else {
+        router.push(redirectTo);
+      }
     } catch (err) {
       // Error handled by context
     } finally {
@@ -39,6 +48,7 @@ const LoginView = () => {
 
     try {
       await signInWithGoogle();
+      // Google OAuth will never be admin, so just redirect normally
       router.push(redirectTo);
     } catch (err) {
       // Error handled by context

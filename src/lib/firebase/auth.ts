@@ -151,3 +151,36 @@ export const onAuthStateChanged = (callback: (user: FirebaseUser | null) => void
 export const getCurrentUser = (): FirebaseUser | null => {
   return auth.currentUser;
 };
+
+/**
+ * Check if credentials match admin credentials
+ */
+export const isAdminCredentials = (email: string, password: string): boolean => {
+  const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+  const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD;
+
+  return email === adminEmail && password === adminPassword;
+};
+
+/**
+ * Sign in as admin with hardcoded credentials
+ * Returns a mock user object for admin
+ */
+export const signInAsAdmin = (email: string, password: string): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    if (isAdminCredentials(email, password)) {
+      // Create a mock user object for admin
+      const adminUser = {
+        uid: 'admin-super-user',
+        email: email,
+        displayName: 'Super Admin',
+        emailVerified: true,
+        photoURL: null,
+        isAdmin: true,
+      };
+      resolve(adminUser);
+    } else {
+      reject(new Error('Invalid admin credentials'));
+    }
+  });
+};
