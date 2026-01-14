@@ -1,7 +1,7 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Map as MapIcon,
   Camera as CameraIcon,
@@ -9,8 +9,10 @@ import {
   User as UserIcon,
   LogOut,
   Building2,
+  Settings,
 } from "lucide-react";
 import { User } from "@/types/types";
+import { useAuth } from "@/hooks/useAuth";
 
 interface DashboardHeaderProps {
   user?: User;
@@ -18,13 +20,28 @@ interface DashboardHeaderProps {
 
 const DashboardHeader: React.FC<DashboardHeaderProps> = ({ user }) => {
   const pathname = usePathname();
+  const router = useRouter();
+  const { signOut } = useAuth();
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const isActive = (path: string) => pathname === path;
 
   const hasNotifications = true;
 
+  const handleSignOut = async () => {
+    setIsLoggingOut(true);
+    try {
+      await signOut();
+      router.push('/');
+    } catch (error) {
+      console.error('Sign out error:', error);
+      setIsLoggingOut(false);
+    }
+  };
+
   return (
-    <header className="bg-slate-900 text-white shadow-md z-30 sticky top-0 border-b border-slate-800">
+    <header className="bg-slate-900 text-white shadow-md z-[90] sticky top-0 border-b border-slate-800">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <Link
           href="/mapview"
@@ -90,9 +107,11 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ user }) => {
             </div>
           </Link>
 
-          <Link href="/profileview" aria-label="Profile">
-            <div
-              className={`ml-2 p-0.5 rounded-full border-2 transition-all ${
+          <div className="relative ml-2">
+            <button
+              onClick={() => setShowDropdown(!showDropdown)}
+              aria-label="Profile Menu"
+              className={`p-0.5 rounded-full border-2 transition-all ${
                 isActive("/profileview")
                   ? "border-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"
                   : "border-transparent hover:border-slate-600"
@@ -109,8 +128,46 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ user }) => {
                   <UserIcon size={16} className="text-slate-400" />
                 )}
               </div>
-            </div>
-          </Link>
+            </button>
+
+            {/* Dropdown Menu */}
+            {showDropdown && (
+              <>
+                <div
+                  className="fixed inset-0 z-[100]"
+                  onClick={() => setShowDropdown(false)}
+                />
+                <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-slate-200 py-2 z-[110]">
+                  <div className="px-4 py-3 border-b border-slate-100">
+                    <p className="text-sm font-semibold text-slate-900 truncate">
+                      {user?.name || 'User'}
+                    </p>
+                    <p className="text-xs text-slate-500 truncate">
+                      {user?.email || ''}
+                    </p>
+                  </div>
+
+                  <Link
+                    href="/profileview"
+                    onClick={() => setShowDropdown(false)}
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                  >
+                    <UserIcon size={16} />
+                    View Profile
+                  </Link>
+
+                  <button
+                    onClick={handleSignOut}
+                    disabled={isLoggingOut}
+                    className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <LogOut size={16} />
+                    {isLoggingOut ? 'Signing Out...' : 'Sign Out'}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </header>
