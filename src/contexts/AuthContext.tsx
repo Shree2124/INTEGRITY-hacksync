@@ -12,6 +12,8 @@ import {
   sendEmailVerification,
   onAuthStateChanged,
   getCurrentUser,
+  isAdminCredentials,
+  signInAsAdmin,
 } from '@/lib/firebase/auth';
 
 interface AuthContextType {
@@ -49,18 +51,35 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [emailVerified, setEmailVerified] = useState<boolean>(false);
 
   // Transform Firebase User to app User type
-  const transformFirebaseUser = (firebaseUser: FirebaseUser): User => {
+  const transformFirebaseUser = (firebaseUser: FirebaseUser | any): User => {
+    // Check if this is an admin user
+    const isAdmin = (firebaseUser as any).isAdmin === true;
+
     return {
       id: firebaseUser.uid,
-      name: firebaseUser.displayName || 'User',
+      name: firebaseUser.displayName || (isAdmin ? 'Super Admin' : 'User'),
       email: firebaseUser.email || '',
       avatarUrl: firebaseUser.photoURL || undefined,
-      role: 'Citizen', // Default role
+      role: isAdmin ? 'Admin' : 'Citizen', // Set role based on admin status
     };
   };
 
   // Subscribe to auth state changes
   useEffect(() => {
+    // Check for admin session first
+    const adminSession = localStorage.getItem('admin_session');
+    if (adminSession) {
+      try {
+        const adminUser = JSON.parse(adminSession);
+        setUser(transformFirebaseUser(adminUser));
+        setEmailVerified(true);
+        setLoading(false);
+        return;
+      } catch (err) {
+        localStorage.removeItem('admin_session');
+      }
+    }
+
     const unsubscribe = onAuthStateChanged((firebaseUser) => {
       if (firebaseUser) {
         setUser(transformFirebaseUser(firebaseUser));
@@ -121,8 +140,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setLoading(true);
     setError(null);
     try {
-      await firebaseSignIn(email, password);
-      // User will be updated via onAuthStateChanged
+      // Check if these are admin credentials first
+      if (isAdminCredentials(email, password)) {
+        const adminUser = await signInAsAdmin(email, password);
+        // Manually set the admin user
+        setUser(transformFirebaseUser(adminUser));
+        setEmailVerified(true);
+        // Store admin session in localStorage
+        localStorage.setItem('admin_session', JSON.stringify(adminUser));
+      } else {
+        // Regular Firebase sign in
+        await firebaseSignIn(email, password);
+        // User will be updated via onAuthStateChanged
+      }
     } catch (err: any) {
       setError(err.message);
       throw err;
@@ -149,8 +179,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setLoading(true);
     setError(null);
     try {
-      await signOutUser();
-      // User will be cleared via onAuthStateChanged
+      // Check if admin session exists
+      const adminSession = localStorage.getItem('admin_session');
+      if (adminSession) {
+        // Clear admin session
+        localStorage.removeItem('admin_session');
+        setUser(null);
+        setEmailVerified(false);
+      } else {
+        // Regular Firebase sign out
+        await signOutUser();
+        // User will be cleared via onAuthStateChanged
+      }
     } catch (err: any) {
       setError(err.message);
       throw err;
