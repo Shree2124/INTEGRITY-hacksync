@@ -5,7 +5,6 @@ import {
   Mail, 
   Lock, 
   ArrowRight, 
-  Smartphone, 
   Fingerprint, 
   ShieldCheck,
   Building2
@@ -24,7 +23,6 @@ const LoginView = ({ onLogin }: LoginViewProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    // Simulate network delay for realism
     setTimeout(() => {
       onLogin(email || 'citizen@integrity.app');
       setIsLoading(false);
@@ -34,10 +32,8 @@ const LoginView = ({ onLogin }: LoginViewProps) => {
   return (
     <div className="min-h-screen bg-slate-50 flex overflow-hidden">
       
-      {/* LEFT SIDE: Visual Brand Story */}
       <div className="hidden lg:flex lg:w-1/2 bg-slate-900 relative flex-col justify-between p-12 text-white overflow-hidden">
         
-        {/* Background Animation (Abstract Map) */}
         <div className="absolute inset-0 opacity-20">
            <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.2)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.2)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
            <motion.div 
@@ -47,7 +43,6 @@ const LoginView = ({ onLogin }: LoginViewProps) => {
            />
         </div>
 
-        {/* Content */}
         <div className="relative z-10">
            <div className="flex items-center gap-3 mb-8">
               <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center border border-white/20 backdrop-blur-md">
@@ -66,7 +61,6 @@ const LoginView = ({ onLogin }: LoginViewProps) => {
              Join 1.2 Million citizens securing national infrastructure through transparency. Your audit is the first line of defense against corruption.
            </p>
            
-           {/* Trust Badges */}
            <div className="flex gap-4 opacity-70 grayscale hover:grayscale-0 transition-all">
               <div className="h-8 w-20 bg-white/20 rounded flex items-center justify-center text-[10px] font-bold">DIGITAL INDIA</div>
               <div className="h-8 w-20 bg-white/20 rounded flex items-center justify-center text-[10px] font-bold">G20</div>
@@ -75,7 +69,6 @@ const LoginView = ({ onLogin }: LoginViewProps) => {
         </div>
       </div>
 
-      {/* RIGHT SIDE: The Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-12 relative bg-white">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -83,7 +76,6 @@ const LoginView = ({ onLogin }: LoginViewProps) => {
           transition={{ duration: 0.5 }}
           className="w-full max-w-md space-y-8"
         >
-          {/* Mobile Header (Only visible on small screens) */}
           <div className="lg:hidden text-center mb-8">
              <h2 className="text-2xl font-bold text-slate-900">Project INTEGRITY</h2>
              <p className="text-slate-500 text-sm">Citizen Audit Portal</p>
@@ -94,7 +86,6 @@ const LoginView = ({ onLogin }: LoginViewProps) => {
             <p className="mt-2 text-slate-500">Please enter your credentials to access the dashboard.</p>
           </div>
 
-          {/* Login Method Tabs */}
        
           <form className="space-y-6" onSubmit={handleSubmit}>
             
@@ -157,7 +148,6 @@ const LoginView = ({ onLogin }: LoginViewProps) => {
             </button>
           </form>
 
-          {/* Divider */}
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-slate-200" />
@@ -167,7 +157,6 @@ const LoginView = ({ onLogin }: LoginViewProps) => {
             </div>
           </div>
 
-          {/* Alternative Logins */}
           <div className="grid grid-cols-2 gap-4">
              <button onClick={() => onLogin("parichay@gov.in")} className="flex items-center justify-center gap-2 py-2.5 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors group">
                 <Fingerprint size={18} className="text-slate-400 group-hover:text-orange-500 transition-colors" />
@@ -178,7 +167,6 @@ const LoginView = ({ onLogin }: LoginViewProps) => {
              </button>
           </div>
 
-          {/* Footer Security Note */}
           <div className="pt-6 flex items-center justify-center gap-2 text-xs text-slate-400">
              <ShieldCheck size={14} className="text-green-500" />
              <span>256-bit End-to-End Encrypted Session</span>
