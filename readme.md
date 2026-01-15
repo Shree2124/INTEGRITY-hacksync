@@ -95,30 +95,85 @@ This allows citizens and authorities to instantly identify risk zones.
 
 ---
 
-## 🧰 Tech Stack  
+## 🧰 Tech Stack
 
-**Frontend**  
-- Next.js (React)  
-- Tailwind CSS  
-- ShadCN UI  
-- Leaflet.js  
-- Recharts  
+**Frontend**
+- Next.js (React)
+- Tailwind CSS
+- ShadCN UI
+- Leaflet.js
+- Recharts
 
-**Backend & Cloud**  
-- Firebase Hosting  
-- Firebase Auth (Anonymous)  
-- Firestore (Mock Government DB)  
-- Firebase Storage  
+**Backend & Cloud**
+- Firebase Hosting
+- Firebase Auth (Email/Password & Google OAuth)
+- Firestore (Mock Government DB)
+- Firebase Storage
 
-**AI & Agents**  
-- Gemini / OpenAI APIs  
-- Vision models for image analysis  
-- LLM-based reasoning agents  
+**AI & Agents**
+- Gemini / OpenAI APIs
+- Vision models for image analysis
+- LLM-based reasoning agents
 
-**Geo & Maps**  
-- OpenStreetMap  
-- Browser GPS API  
-- Leaflet Heatmaps  
+**Geo & Maps**
+- OpenStreetMap
+- Browser GPS API
+- Leaflet Heatmaps
+
+---
+
+## ⚙️ Setup Instructions
+
+### 1. Clone and Install
+```bash
+git clone <repository-url>
+cd INTEGRITY-hacksync
+npm install
+```
+
+### 2. Configure Firebase
+
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Create a new project or select your existing project
+3. Navigate to **Project Settings** (gear icon) > **General**
+4. Scroll to "Your apps" and add a web app if you haven't
+5. Copy the config values and update `.env.local`:
+
+```env
+NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_bucket.appspot.com
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+```
+
+### 3. Enable Authentication Methods
+
+1. In Firebase Console, go to **Authentication** > **Sign-in method**
+2. Enable **Email/Password** authentication
+3. Enable **Google** authentication (optional)
+
+### 4. Configure Email Verification (Important!)
+
+For email verification to work properly after registration:
+
+1. In Firebase Console, go to **Authentication** > **Templates**
+2. Click on **Email address verification**
+3. In the action URL section, add your domain to **Authorized domains**:
+   - For local development: Add `localhost`
+   - For production: Add your production domain (e.g., `yourapp.com`)
+4. Save the template
+
+**Note:** The app automatically handles email verification with a custom action handler at `/auth-action`. When users click the verification link in their email, they'll be automatically redirected to the dashboard upon successful verification.
+
+### 5. Run the Development Server
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
