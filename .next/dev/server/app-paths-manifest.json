@@ -1,0 +1,11 @@
+{
+  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/(site)/alertview/page": "app/(site)/alertview/page.js",
+  "/(site)/auditview/page": "app/(site)/auditview/page.js",
+  "/(site)/dashboard/page": "app/(site)/dashboard/page.js",
+  "/(site)/mapview/page": "app/(site)/mapview/page.js",
+  "/(site)/profileview/page": "app/(site)/profileview/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/map/route": "app/api/map/route.js",
+  "/page": "app/page.js"
+}
