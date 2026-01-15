@@ -130,7 +130,13 @@ export const sendPasswordResetEmail = async (email: string): Promise<void> => {
  */
 export const sendEmailVerification = async (user: FirebaseUser): Promise<void> => {
   try {
-    await firebaseSendEmailVerification(user);
+    // Configure action code settings with custom URL
+    const actionCodeSettings = {
+      url: `${window.location.origin}/auth-action`,
+      handleCodeInApp: true,
+    };
+
+    await firebaseSendEmailVerification(user, actionCodeSettings);
   } catch (error: any) {
     console.error('Error sending verification email:', error);
     throw new Error('Failed to send verification email. Please try again.');
