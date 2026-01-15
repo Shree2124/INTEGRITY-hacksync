@@ -17,10 +17,10 @@ const LandingPage: React.FC = () => {
   const handleGetStarted = () => {
     // If user is authenticated and verified, go to dashboard
     if (user && emailVerified) {
-      router.push('/mapview');
+      router.push("/dashboard");
     } else {
       // Otherwise, go to register page
-      router.push('/register');
+      router.push("/register");
     }
   };
 
@@ -28,7 +28,7 @@ const LandingPage: React.FC = () => {
     <div className="min-h-screen bg-white flex flex-col font-sans relative">
       <ChatBot />
       <Header onGetStarted={handleGetStarted} />
-      <HeroSection  />
+      <HeroSection />
       <NeedSection />
       <FeaturesSection />
       <CTASection onGetStarted={handleGetStarted} />
