@@ -95,7 +95,7 @@ This allows citizens and authorities to instantly identify risk zones.
 
 ---
 
-## 🧰 Tech Stack
+## 🧰 Tech Stack  
 
 **Frontend**
 - Next.js (React)
