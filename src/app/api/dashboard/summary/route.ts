@@ -33,7 +33,7 @@ const countTotalProjects = async()=>{
   return count;
 }
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
   try {
     const totalCount = await reportCount();
     const highRiskCount = await riskCount("High");
