@@ -94,7 +94,7 @@ export const Header: React.FC<HeaderProps> = ({ onGetStarted }) => {
 
             {/* Action Buttons */}
             <div className="flex gap-3">
-              <Link href="/report">
+              <Link href="/reportissue">
                 <Button
                   variant="outline"
                   className="border-red-500 text-red-600 hover:bg-red-50 gap-2 h-9"
