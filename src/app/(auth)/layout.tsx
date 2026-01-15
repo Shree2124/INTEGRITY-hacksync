@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/hooks/useAuth';
-import { LoadingScreen } from '@/components/auth/LoadingScreen';
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
+import { LoadingScreen } from "@/components/auth/LoadingScreen";
 
 export default function AuthLayout({
   children,
@@ -17,7 +17,7 @@ export default function AuthLayout({
     if (!loading) {
       if (user && emailVerified) {
         // User is authenticated and verified, redirect to dashboard
-        router.replace('/mapview');
+        router.replace("/dashboard");
       }
     }
   }, [user, emailVerified, loading, router]);
