@@ -23,7 +23,11 @@ export interface User {
   name: string;
   email: string;
   avatarUrl?: string;
+<<<<<<< HEAD
   role: 'Citizen' | 'Official' | 'Admin';
+=======
+  role: 'Citizen' | 'Official';
+>>>>>>> development
 }
 
 export interface OfficialRecord {
