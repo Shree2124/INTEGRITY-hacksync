@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { User } from "@/types/types";
 import { useAuth } from "@/hooks/useAuth";
+import { motion } from "framer-motion";
 
 interface DashboardHeaderProps {
   user?: User;
@@ -41,25 +42,24 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ user }) => {
   };
 
   return (
-    <header className="bg-slate-900 text-white shadow-md z-[90] sticky top-0 border-b border-slate-800">
+    <header className="bg-slate-950  text-white shadow-md z-[90] sticky top-0 border-b border-slate-800">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        {/* Logo / Home Link */}
-        <Link
-          href="/dashboard"
-          className="flex items-center gap-3 hover:opacity-90 transition-opacity"
-        >
-          <div className="bg-blue-600 p-1.5 rounded-lg shrink-0 border border-blue-500 shadow-[0_0_15px_rgba(37,99,235,0.3)]">
-            <Building2 size={20} className="text-white" />
-          </div>
-          <div>
-            <h1 className="text-lg sm:text-xl font-bold tracking-tight leading-none font-serif">
-              INTEGRITY
-            </h1>
-            <p className="text-[10px] text-slate-400 uppercase tracking-widest hidden sm:block">
-              Citizen Audit Portal
-            </p>
-          </div>
-        </Link>
+        <div className="flex items-center gap-3">
+              <Link href="/dashboard" className="flex items-center gap-4 group">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="flex flex-col items-center justify-center cursor-pointer"
+                >
+                  <div className="relative w-10 h-10 sm:w-40 sm:h-12 flex items-center justify-center">
+                    <img
+                      src="/darklogo.png"
+                      alt="logo"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                </motion.div>
+              </Link>
+            </div>
 
         {/* Navigation Items */}
         <div className="flex items-center gap-2 sm:gap-3">
