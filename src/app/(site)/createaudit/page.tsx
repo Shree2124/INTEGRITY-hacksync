@@ -170,7 +170,7 @@ export default function CreateAuditPage() {
       });
 
       if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
+        throw new Error(`Error: ${response}`);
       }
 
       const result = await response.json();
