@@ -5,7 +5,6 @@ import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { LoadingScreen } from '@/components/auth/LoadingScreen';
 import { EmailVerificationBanner } from '@/components/auth/EmailVerificationBanner';
-import { FooterSection } from "@/components/LandingPage/FooterSection";
 import SiteHeader from "@/components/layouts/SiteHeader";
 
 export default function SiteLayout({
@@ -46,7 +45,6 @@ export default function SiteLayout({
       <EmailVerificationBanner />
       <SiteHeader user={user} />
       {children}
-      <FooterSection />
     </>
   );
 }
