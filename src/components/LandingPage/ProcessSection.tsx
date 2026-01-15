@@ -1,216 +1,172 @@
 "use client";
-import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import React from "react";
+import { motion } from "framer-motion";
 import { 
-  ScanLine, 
-  Database, 
-  FileSignature, 
-  Cpu, 
-  MapPin, 
-  CheckCheck,
-  AlertOctagon
+  TrendingDown, 
+  AlertTriangle, 
+  Clock, 
+  EyeOff,
+  Construction,
+  Banknote
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
-const timelineData = [
+const problems = [
   {
-    step: "01",
-    title: "Cryptographic Capture",
-    description: "The citizen app captures the image and embeds a tamper-proof digital signature containing GPS, device telemetry, and timestamp.",
-    tech: ["Geo-fencing", "SHA-256 Hashing", "Device Fingerprint"],
-    metric: "Latency: < 0.5s",
-    color: "bg-blue-500",
-    icon: ScanLine,
-    // Visual Mockup for Step 1
-    Visual: () => (
-      <div className="bg-slate-900 rounded-xl p-4 w-full h-48 relative overflow-hidden flex flex-col items-center justify-center border border-slate-700 shadow-2xl">
-        <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/grid-me.png')]"></div>
-        {/* Scanning Animation */}
-        <motion.div 
-          animate={{ top: ["10%", "90%", "10%"] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-          className="absolute w-full h-0.5 bg-blue-400 shadow-[0_0_15px_rgba(96,165,250,0.8)] z-10"
-        />
-        <MapPin className="text-blue-500 w-8 h-8 mb-2" />
-        <div className="font-mono text-xs text-blue-200">
-          LAT: 19.0760° N<br/>LONG: 72.8777° E
-        </div>
-        <div className="absolute bottom-2 right-2 px-2 py-0.5 bg-blue-900/50 rounded text-[10px] text-blue-300 border border-blue-700">
-          VERIFIED
-        </div>
-      </div>
-    )
+    title: "Financial Leakage",
+    category: "ECONOMIC IMPACT",
+    description: "Estimates suggest 15-20% of public infrastructure funds are lost to pilferage, sub-standard materials, and 'ghost' contracting.",
+    stat: "₹40,000 Cr+",
+    statLabel: "Est. Annual Loss",
+    icon: Banknote,
+    color: "bg-red-50 text-red-600 border-red-100",
+    delay: 0.1,
+    colSpan: "md:col-span-2"
   },
   {
-    step: "02",
-    title: "VLM Analysis & Matching",
-    description: "Our Vision-Language Model (VLM) compares the site photo against the specific tender BOQ (Bill of Quantities) to identify material discrepancies.",
-    tech: ["Computer Vision", "LLM Agents", "Vector Database"],
-    metric: "Accuracy: 98.4%",
-    color: "bg-purple-500",
-    icon: Cpu,
-    // Visual Mockup for Step 2
-    Visual: () => (
-      <div className="bg-white rounded-xl p-4 w-full h-48 border border-slate-200 shadow-xl relative overflow-hidden">
-        <div className="flex gap-2 mb-3 border-b border-slate-100 pb-2">
-          <div className="h-2 w-2 rounded-full bg-red-400"></div>
-          <div className="h-2 w-2 rounded-full bg-yellow-400"></div>
-          <div className="h-2 w-2 rounded-full bg-green-400"></div>
-        </div>
-        <div className="space-y-2 font-mono text-[10px]">
-          <div className="flex justify-between items-center p-1 bg-slate-50 rounded">
-            <span className="text-slate-500">Target:</span>
-            <span className="font-bold text-slate-800">Grade M40 Concrete</span>
-          </div>
-          <div className="flex justify-between items-center p-1 bg-slate-50 rounded">
-            <span className="text-slate-500">Detected:</span>
-            <span className="font-bold text-red-600">Grade M20 (Low Quality)</span>
-          </div>
-          <motion.div 
-            initial={{ width: 0 }}
-            whileInView={{ width: "100%" }}
-            transition={{ duration: 1.5 }}
-            className="h-1.5 bg-slate-200 rounded-full overflow-hidden mt-4"
-          >
-            <div className="h-full bg-red-500 w-[85%]"></div>
-          </motion.div>
-          <div className="text-right text-red-500 font-bold">Risk: High</div>
-        </div>
-      </div>
-    )
+    title: "Safety Compromised",
+    category: "PUBLIC SAFETY",
+    description: "The use of low-grade concrete (M20 instead of M40) directly correlates to structural fatigue and reduced lifespan of bridges and roads.",
+    stat: "High Risk",
+    statLabel: "Structural Integrity",
+    icon: AlertTriangle,
+    color: "bg-amber-50 text-amber-600 border-amber-100",
+    delay: 0.2,
+    colSpan: "md:col-span-1"
   },
   {
-    step: "03",
-    title: "Blockchain Verdict",
-    description: "The audit result is written to a public permissioned ledger. If violations exceed threshold, a digital Notice is auto-dispatched.",
-    tech: ["Smart Contracts", "Hyperledger", "Auto-Mailer"],
-    metric: "Processing: Instant",
-    color: "bg-orange-500",
-    icon: FileSignature,
-    // Visual Mockup for Step 3
-    Visual: () => (
-      <div className="bg-orange-50 rounded-xl p-4 w-full h-48 border-2 border-orange-100 border-dashed flex flex-col items-center justify-center text-center relative">
-         <div className="absolute top-2 right-2">
-            <Database className="text-orange-200 w-12 h-12 opacity-50" />
-         </div>
-         <div className="bg-white p-3 rounded-full shadow-sm mb-2">
-            <AlertOctagon className="text-orange-600 w-6 h-6" />
-         </div>
-         <h4 className="font-bold text-slate-800 text-sm">Action Triggered</h4>
-         <p className="text-[10px] text-slate-500 mt-1 max-w-[150px]">
-           Official Complaint #9921 lodged with BMC Engineering Dept.
-         </p>
-         <Badge variant="outline" className="mt-3 bg-orange-100 text-orange-700 border-orange-200 text-[10px]">
-           Block #881920 Verified
-         </Badge>
-      </div>
-    )
+    title: "Indefinite Delays",
+    category: "EFFICIENCY",
+    description: "Without real-time monitoring, projects suffer from lack of accountability, leading to average delays of 2-3 years per major project.",
+    stat: "3.5 Years",
+    statLabel: "Avg. Overrun",
+    icon: Clock,
+    color: "bg-slate-50 text-slate-600 border-slate-200",
+    delay: 0.3,
+    colSpan: "md:col-span-1"
+  },
+  {
+    title: "The Transparency Gap",
+    category: "GOVERNANCE",
+    description: "Traditional audits happen 'post-mortem'—after the road is built and the money is spent. There is currently no mechanism for real-time citizen oversight.",
+    stat: "Zero",
+    statLabel: "Real-time Visibility",
+    icon: EyeOff,
+    color: "bg-slate-50 text-slate-600 border-slate-200",
+    delay: 0.4,
+    colSpan: "md:col-span-2"
   }
 ];
 
-const ProcessTimeline = () => {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
-
-  const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
-
+export const NeedSection = () => {
   return (
-    <section className="py-24 bg-slate-50 overflow-hidden" ref={containerRef}>
-      <div className="container mx-auto px-4">
+    <section className="py-24 bg-white relative overflow-hidden">
+      
+      {/* Background decoration: Subtle Construction Pattern */}
+      <div className="absolute top-0 left-0 w-full h-20 bg-gradient-to-b from-slate-50 to-transparent"></div>
+      <div className="absolute -left-20 top-40 opacity-5 rotate-12">
+        <Construction size={300} />
+      </div>
+
+      <div className="container mx-auto px-4 max-w-6xl relative z-10">
         
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-20">
-          <Badge className="mb-4 bg-slate-900 text-white hover:bg-slate-800">System Architecture</Badge>
-          <h2 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 mb-6">
-            Inside the <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Black Box</span>
-          </h2>
-          <p className="text-slate-600 text-lg">
-            How we turn a single pixel into a policy action using military-grade verification.
-          </p>
-        </div>
-
-        {/* Timeline Container */}
-        <div className="relative max-w-5xl mx-auto">
+        <div className="max-w-3xl mx-auto text-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-50 border border-red-100 text-red-600 text-xs font-bold uppercase tracking-wider mb-4"
+          >
+            <TrendingDown size={14} />
+            The Reality Check
+          </motion.div>
           
-          {/* Central Line (Desktop) */}
-          <div className="absolute left-1/2 top-0 bottom-0 w-1 bg-slate-200 -translate-x-1/2 hidden md:block rounded-full">
-            <motion.div 
-              style={{ scaleY, transformOrigin: "top" }}
-              className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-blue-500 via-purple-500 to-orange-500"
-            />
-          </div>
-
-          <div className="space-y-12 md:space-y-24">
-            {timelineData.map((item, index) => {
-              const isEven = index % 2 === 0;
-              return (
-                <div key={index} className={`flex flex-col md:flex-row items-center gap-8 md:gap-0 ${isEven ? "" : "md:flex-row-reverse"}`}>
-                  
-                  {/* Text Content */}
-                  <div className={`w-full md:w-1/2 ${isEven ? "md:pr-16 md:text-right" : "md:pl-16 md:text-left"} text-center md:text-left`}>
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: "-100px" }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <div className={`inline-flex items-center gap-2 mb-3 ${isEven ? "md:flex-row-reverse" : ""}`}>
-                        <span className={`text-4xl font-black text-slate-200`}>{item.step}</span>
-                        <h3 className="text-2xl font-bold text-slate-900">{item.title}</h3>
-                      </div>
-                      
-                      <p className="text-slate-600 mb-4 leading-relaxed">
-                        {item.description}
-                      </p>
-
-                      <div className={`flex flex-wrap gap-2 mb-4 ${isEven ? "md:justify-end justify-center" : "md:justify-start justify-center"}`}>
-                        {item.tech.map((t) => (
-                          <span key={t} className="px-2 py-1 bg-white border border-slate-200 rounded text-[10px] font-semibold text-slate-600 uppercase tracking-wide">
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-
-                      <div className={`text-xs font-mono text-slate-400 ${isEven ? "md:text-right" : "md:text-left"}`}>
-                        {item.metric}
-                      </div>
-                    </motion.div>
-                  </div>
-
-                  {/* Center Node */}
-                  <div className="relative z-10 flex-shrink-0">
-                    <div className={`w-12 h-12 rounded-full ${item.color} flex items-center justify-center text-white shadow-lg ring-4 ring-white`}>
-                      <item.icon size={20} />
-                    </div>
-                  </div>
-
-                  {/* Visual Mockup */}
-                  <div className={`w-full md:w-1/2 ${isEven ? "md:pl-16" : "md:pr-16"}`}>
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.9, x: isEven ? 50 : -50 }}
-                      whileInView={{ opacity: 1, scale: 1, x: 0 }}
-                      viewport={{ once: true, margin: "-100px" }}
-                      transition={{ duration: 0.6 }}
-                      className="hover:scale-105 transition-transform duration-300"
-                    >
-                      <item.Visual />
-                    </motion.div>
-                  </div>
-
-                </div>
-              );
-            })}
-          </div>
-
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl md:text-5xl font-serif font-bold text-slate-900 mb-6"
+          >
+            The Cost of <span className="text-red-600">Silence</span>
+          </motion.h2>
+          
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-lg text-slate-600 leading-relaxed"
+          >
+            Infrastructure decay isn't just an inconvenience—it's a systemic failure. 
+            When quality checks are manual and opaque, public funds vanish and public safety is compromised.
+          </motion.p>
         </div>
+
+        {/* The Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {problems.map((item, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: item.delay, duration: 0.5 }}
+              className={cn(
+                "group relative p-8 rounded-2xl border transition-all duration-300 hover:shadow-xl hover:-translate-y-1",
+                item.color,
+                item.colSpan
+              )}
+            >
+              <div className="flex flex-col h-full justify-between">
+                <div>
+                  <div className="flex justify-between items-start mb-6">
+                    <span className="text-[10px] font-bold tracking-widest uppercase opacity-70">
+                      {item.category}
+                    </span>
+                    <item.icon className="opacity-80 group-hover:scale-110 transition-transform duration-300" size={24} />
+                  </div>
+                  
+                  <h3 className="text-2xl font-bold text-slate-900 mb-3">
+                    {item.title}
+                  </h3>
+                  
+                  <p className="text-slate-600 text-sm leading-relaxed mb-8 max-w-lg">
+                    {item.description}
+                  </p>
+                </div>
+
+                <div className="pt-6 border-t border-black/5">
+                  <div className="text-3xl md:text-4xl font-black text-slate-900 mb-1">
+                    {item.stat}
+                  </div>
+                  <div className="text-xs font-mono text-slate-500 uppercase">
+                    {item.statLabel}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Divider Quote */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.6 }}
+          className="mt-24 text-center border-t border-b border-slate-100 py-12"
+        >
+          <blockquote className="text-xl md:text-2xl font-serif italic text-slate-500 max-w-4xl mx-auto">
+            "Sunlight is said to be the best of disinfectants; electric light the most efficient policeman."
+          </blockquote>
+          <cite className="block mt-4 text-sm font-bold text-slate-900 not-italic">
+            — Louis Brandeis
+          </cite>
+        </motion.div>
+
       </div>
     </section>
   );
 };
-
-export const ProcessSection: React.FC = () => {
-  return <ProcessTimeline />;
-}
