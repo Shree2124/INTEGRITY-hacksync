@@ -1,16 +1,23 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js';
 
-console.log( process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-// Public client (for frontend, safe)
-export const supabasePublic = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.error('Supabase URL or Anon Key is missing. Check your .env.local file.');
+}
 
-// Admin client (for server only)
-export const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+async function listBuckets() {
+  const { data: buckets, error } = await supabase.storage.listBuckets();
+
+  if (error) {
+    console.error('Error listing buckets:', error);
+    return;
+  }
+
+  console.log('Buckets:', buckets);
+}
+
+listBuckets();

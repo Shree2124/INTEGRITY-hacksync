@@ -12,7 +12,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { supabasePublic } from "@/lib/dbConnect";
+import { supabase } from "@/lib/dbConnect";
 import Link from "next/link";
 
 export const FooterSection: React.FC = () => {
@@ -29,7 +29,7 @@ export const FooterSection: React.FC = () => {
     );
 
     async function fetchStats() {
-      const { count } = await supabasePublic
+      const { count } = await supabase
         .from("citizen_reports")
         .select("*", { count: "exact", head: true });
 

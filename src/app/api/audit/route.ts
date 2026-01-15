@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/dbConnect';
+import { supabase } from '@/lib/dbConnect';
 import { auditProject } from '@/services/geminiService';
 import { OfficialRecord } from '@/types/types';
 
@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
         // 1. Fetch nearest government project
         // For simplicity in a hackathon, we fetch all and find the nearest in JS.
         // In production, use PostGIS: st_distance(location, st_point(lng, lat))
-        const { data: projects, error: projectsError } = await supabaseAdmin
+        const { data: projects, error: projectsError } = await supabase
             .from('government_projects')
             .select('*');
 
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
         const auditResult = await auditProject(nearestProject, { imageUrl, notes });
 
         // 3. Insert into audit_results
-        const { data: auditData, error: auditError } = await supabaseAdmin
+        const { data: auditData, error: auditError } = await supabase
             .from('audit_results')
             .insert({
                 report_id: reportId,
@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
         }
 
         // 5. Update Report Status
-        await supabaseAdmin
+        await supabase
             .from('citizen_reports')
             .update({ status: 'Audited' })
             .eq('id', reportId);
