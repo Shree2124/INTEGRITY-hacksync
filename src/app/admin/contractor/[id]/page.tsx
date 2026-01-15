@@ -43,7 +43,7 @@ export default function ContractorDetailPage() {
       <div className="max-w-5xl mx-auto">
         <div className="mb-6 flex items-center gap-4">
           <Link
-            href="/admin"
+            href="/admin/dashboard"
             className="p-2 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 text-slate-600"
           >
             <ArrowLeft size={20} />

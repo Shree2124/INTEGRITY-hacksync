@@ -37,7 +37,7 @@ const LoginView = () => {
       });
 
       if (currentUser && (currentUser as any).isAdmin) {
-        router.push("/admin");
+        router.push("/admin/dashboard");
       } else {
         router.push(redirectTo);
       }

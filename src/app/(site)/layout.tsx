@@ -23,7 +23,7 @@ export default function SiteLayout({
         router.replace(`/login?redirect=${pathname}`);
       } else if (user.role === 'Admin') {
         // Admin users should only access admin routes
-        router.replace('/admin_dashboard');
+        router.replace('/admin/dashboard');
       } else if (!emailVerified) {
         // User authenticated but email not verified
         router.replace('/verify-email');

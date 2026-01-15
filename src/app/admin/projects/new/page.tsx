@@ -151,7 +151,7 @@ export default function NewProjectPage() {
     await new Promise(r => setTimeout(r, 1500));
     setLoading(false);
     alert(`Project "${formData.projectName}" Created at [${formData.lat}, ${formData.lng}]`);
-    router.push('/admin');
+    router.push('/admin/dashboard');
   };
 
   // Bulk Import Submit
@@ -162,7 +162,7 @@ export default function NewProjectPage() {
     await new Promise(r => setTimeout(r, 2000));
     setBulkLoading(false);
     alert(`Successfully imported data from ${bulkFile.name}`);
-    router.push('/admin');
+    router.push('/admin/dashboard');
   };
 
   return (
@@ -171,7 +171,7 @@ export default function NewProjectPage() {
         
         {/* Header */}
         <div className="flex items-center gap-4">
-          <Link href="/admin" className="p-2 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 text-slate-600 transition-colors">
+          <Link href="/admin/dashboard" className="p-2 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 text-slate-600 transition-colors">
             <ArrowLeft size={20} />
           </Link>
           <h1 className="text-2xl font-bold text-slate-900">Project Management</h1>
@@ -340,16 +340,16 @@ export default function NewProjectPage() {
         </form>
 
         {/* Divider */}
-        <div className="flex items-center gap-4 py-4">
+        {/* <div className="flex items-center gap-4 py-4">
           <div className="h-px bg-slate-200 flex-1"></div>
           <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Or</span>
           <div className="h-px bg-slate-200 flex-1"></div>
-        </div>
+        </div> */}
 
         {/* =========================================== */}
         {/* SECTION 2: BULK IMPORT (CSV/EXCEL)          */}
         {/* =========================================== */}
-        <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border border-green-100 p-8">
+        {/* <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border border-green-100 p-8">
           <div className="flex justify-between items-start mb-6">
             <div>
               <h2 className="text-lg font-bold text-green-900 flex items-center gap-2">
@@ -413,7 +413,7 @@ export default function NewProjectPage() {
               {bulkLoading ? <Loader2 className="animate-spin" size={18}/> : 'Import Data'}
             </button>
           </div>
-        </div>
+        </div> */}
 
       </div>
     </div>
