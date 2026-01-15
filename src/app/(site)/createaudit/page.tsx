@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -24,6 +24,7 @@ import {
   PenTool
 } from 'lucide-react';
 import { ProjectCategory, RiskLevel } from '@/types/types';
+import { useAuth } from '@/hooks/useAuth';
 
 // --- DYNAMIC MAP IMPORT ---
 const MapVisualizer = dynamic(
@@ -39,6 +40,10 @@ const MapVisualizer = dynamic(
 );
 
 export default function CreateAuditPage() {
+
+  const { user, emailVerified, loading } = useAuth();
+  console.log(user)
+
   const router = useRouter();
   
   // --- STATE MANAGEMENT ---
@@ -64,6 +69,10 @@ export default function CreateAuditPage() {
   // AI Result State
   const [aiAnalysis, setAiAnalysis] = useState<{score: number, level: RiskLevel, reasoning: string} | null>(null);
   const [generatedComplaint, setGeneratedComplaint] = useState<string | null>(null);
+
+  // useEffect(()=>{
+  // })
+
 
   // --- INITIALIZATION ---
   useEffect(() => {
@@ -124,20 +133,64 @@ export default function CreateAuditPage() {
 
   // --- AI LOGIC SIMULATION ---
   const handleSubmit = async () => {
-    setIsSubmitting(true);
-    // Simulate AI Processing Time
-    await new Promise(r => setTimeout(r, 2000));
-    
-    // Mock AI Result
-    const mockRisk = Math.floor(Math.random() * (95 - 60 + 1) + 60); // Random score 60-95
-    setAiAnalysis({
-      score: mockRisk,
-      level: mockRisk > 80 ? RiskLevel.HIGH : RiskLevel.MEDIUM,
-      reasoning: "Visual analysis detects significant structural fatigue and surface degradation consistent with prolonged neglect."
-    });
+    // 1. Basic Validation
+    if (!selectedLocation || !file) {
+      alert("Please ensure a location is selected and an image is uploaded.");
+      return;
+    }
 
-    setIsSubmitting(false);
-    setStep(4); // Move to AI Result Step
+    setIsSubmitting(true);
+
+    try {
+      // 2. Create FormData
+      const formData = new FormData();
+
+      // Append textual data
+      formData.append('latitude', selectedLocation.lat.toString());
+      formData.append('longitude', selectedLocation.lng.toString());
+      formData.append('category', category);
+      formData.append('description', description);
+      
+      // Append User Data (Depending on your backend requirements)
+      if (user) {
+        formData.append('userId', user.id || ''); // Adjust based on your user object
+        formData.append('userEmail', user.email || '');
+      }
+
+      // Append the File (The key 'evidence' must match what your backend expects)
+      formData.append('evidence', file);
+
+      console.log(formData)
+      // 3. Make API Call
+      const response = await fetch('/api/report', { // Replace with your actual endpoint
+        method: 'POST',
+        body: formData,
+        // Note: Do NOT set 'Content-Type': 'multipart/form-data'. 
+        // The browser automatically sets the boundary when passing FormData.
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+
+      // 4. Handle Success & Set AI Analysis from backend response
+      // Assuming your API returns: { score: number, level: string, reasoning: string }
+      setAiAnalysis({
+        score: result.score, 
+        level: result.level as RiskLevel, 
+        reasoning: result.reasoning
+      });
+
+      setStep(4); // Move to AI Result Step
+
+    } catch (error) {
+      console.error("Submission failed:", error);
+      alert("Failed to submit complaint. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleGenerateDraft = async () => {

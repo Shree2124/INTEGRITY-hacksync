@@ -24,10 +24,6 @@ export interface User {
   email: string;
   avatarUrl?: string;
   role: 'Citizen' | 'Official' | 'Admin';
-<<<<<<< HEAD
-=======
-
->>>>>>> 54424dd25640219bc36657d60b747c28c53ab9e7
 }
 
 export interface OfficialRecord {

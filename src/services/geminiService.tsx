@@ -131,3 +131,41 @@ export const generateComplaintLetter = async (
     return "Error generating correspondence.";
   }
 };
+
+
+export const auditProject = async (
+  governmentProject: any,
+  citizenReport: { imageUrl: string; notes: string }
+) => {
+  try {
+    // 1. Fetch and convert image to base64
+    const imageRes = await fetch(citizenReport.imageUrl);
+    const arrayBuffer = await imageRes.arrayBuffer();
+    const base64Image = Buffer.from(arrayBuffer).toString('base64');
+
+    // 2. Analyze image
+    const evidenceDescription = await analyzeEvidenceImage(base64Image);
+
+    // 3. Perform audit
+    const auditResult = await performAudit(evidenceDescription, {
+      projectName: governmentProject.project_name,
+      status: governmentProject.status,
+      description: governmentProject.category, // Using category as description if not present
+      budget: governmentProject.budget,
+      contractor: governmentProject.contractor
+    } as any);
+
+    return {
+      risk_level: auditResult.riskLevel,
+      discrepancies: auditResult.discrepancies,
+      ai_verdict: auditResult.reasoning
+    };
+  } catch (error) {
+    console.error("auditProject failed:", error);
+    return {
+      risk_level: "Unknown",
+      discrepancies: ["AI Audit failed to process."],
+      ai_verdict: "The AI service encountered an error while analyzing this report."
+    };
+  }
+};

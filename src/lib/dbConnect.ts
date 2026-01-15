@@ -8,3 +8,16 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+async function listBuckets() {
+  const { data: buckets, error } = await supabase.storage.listBuckets();
+
+  if (error) {
+    console.error('Error listing buckets:', error);
+    return;
+  }
+
+  console.log('Buckets:', buckets);
+}
+
+listBuckets();
