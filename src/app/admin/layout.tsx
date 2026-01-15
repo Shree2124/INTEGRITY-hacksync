@@ -14,29 +14,30 @@ export default function AdminLayout({
   const router = useRouter();
   const pathname = usePathname();
 
-  useEffect(() => {
-    if (!loading) {
-      if (!user) {
-        // Not authenticated, redirect to login
-        router.replace(`/login?redirect=${pathname}`);
-      } else if (user.role !== 'Admin') {
-        // Authenticated but not admin, redirect to regular dashboard
-        router.replace('/dashboard');
-      }
-    }
-  }, [user, loading, router, pathname]);
+    // useEffect(() => {
+    //   if (!loading) {
+    //     if (!user) {
+    //       // Not authenticated, redirect to login
+    //       router.replace(`/login?redirect=${pathname}`);
+    //     } else if (user.role == 'Admin') {
+    //       // Authenticated but not admin, redirect to regular dashboard
+    //       router.replace('/dashboard');
+    //     }
+    //   }
+    // }, [user, loading, router, pathname]);
 
   if (loading) {
     return <LoadingScreen />;
   }
 
   // If not admin, don't render
-  if (!user || user.role !== 'Admin') {
-    return null;
-  }
+  // if (!user || user.role !== 'Admin') {
+  //   return null;
+  // }
 
   return (
     <div className="min-h-screen bg-slate-50">
+      
       {children}
     </div>
   );
